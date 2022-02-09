@@ -401,6 +401,7 @@ export default {
         }
         else {
           //let nextNum = n + 1
+          this.$forceUpdate()
           let nextNum = n + 1
           console.log("nextNum " + nextNum)
           if (nextNum <= 5) {
