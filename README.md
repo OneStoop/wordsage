@@ -1,3 +1,5 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/c423f338-d2db-4c8f-acd3-32ca71950acf/deploy-status)](https://app.netlify.com/sites/trusting-jackson-9d5381/deploys)
+
 # wordsage
 
 ## Project setup

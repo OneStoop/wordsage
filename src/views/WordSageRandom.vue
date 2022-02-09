@@ -195,7 +195,7 @@ textarea:focus, input:focus{
       </v-col>
     </v-row>
     <v-row>
-{{ answers }}
+
     </v-row>
   </v-container>
 </template>
