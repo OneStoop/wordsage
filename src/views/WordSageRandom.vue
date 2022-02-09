@@ -19,7 +19,7 @@ textarea:focus, input:focus{
           type="info"
           max-width=200
         >
-          Word not in list
+          {{ alertText }}
         </v-alert>
       </v-col>
     </v-row>
@@ -41,27 +41,12 @@ textarea:focus, input:focus{
                   dense
                 >
 
-                  <v-col cols="1">
-                    <input
-                      v-model="ans.word"
-                      maxlength="5"
-                      width="20"
-                      autocomplete="off"
-                      type="text"
-                      spellcheck="false"
-                      styel="color:#fff;"
-                      @change="aChange(ans.id)"
-                      @keydown.tab.prevent="focusOn('aField')"
-                      @keydown.enter.prevent="aChange(ans.id)"
-                      :disabled="ans.disabled"
-                      :id="ans.input"
-                    >
-                  </v-col>
+
 
                   <v-col
                     v-for="i in 5"
                     :key=i
-                    cols="1"
+                    cols="2"
                     class="pt-0 ma-0"
                   >
                     <v-card
@@ -127,6 +112,7 @@ textarea:focus, input:focus{
                 class="text-center justify-center"
                 dense
               >
+
                 <v-col
                   cols="1"
                   class="pt-5 ma-0"
@@ -150,6 +136,22 @@ textarea:focus, input:focus{
                 class="text-center justify-center"
                 dense
               >
+                <v-col
+                  cols="2"
+                  class="pt-5 ma-0"
+                >
+                  <v-card
+                    height="30"
+                    width="50"
+                    class="text-caption pt-2 ma-0"
+                    color="grey lighten-3"
+                    tabindex="-1"
+                    id="return"
+                    @click="doType('return')"
+                  >
+                    ENTER
+                  </v-card>
+                </v-col>
                 <v-col
                   cols="1"
                   class="pt-5 ma-0"
@@ -193,7 +195,7 @@ textarea:focus, input:focus{
       </v-col>
     </v-row>
     <v-row>
-
+{{ answers }}
     </v-row>
   </v-container>
 </template>
@@ -206,6 +208,7 @@ export default {
   data () {
     return {
       alert: false,
+      alertText: "",
       word: "found",
       answerColors: {},
       used: {},
@@ -312,11 +315,16 @@ export default {
         var data = this.answers[this.activeAnswer].word
         this.answers[this.activeAnswer].word = data.substring(0, data.length - 1)
       }
-      else {
-        this.answers[this.activeAnswer].word += l.toLowerCase()
+      else if (l === "return") {
+        this.aChange(this.activeAnswer)
       }
-      const input = document.getElementById('aField' + this.activeAnswer)
-      input.focus()
+      else {
+        if (this.answers[this.activeAnswer].word.length < 5) {
+          this.answers[this.activeAnswer].word += l.toLowerCase()
+        }
+      }
+      //const input = document.getElementById('aField' + this.activeAnswer)
+      //input.focus()
     },
     aChange (n) {
       console.log("doing aChange")
@@ -327,11 +335,14 @@ export default {
 
       //make sure answer has the correct number of characters
       //if not return the focus to the active input
+      console.log(data)
       if (data.length < 5) {
         console.log("too short")
-        const input = document.getElementById('aField' + n)
-        console.log(input)
-        input.focus()
+        this.alert = true
+        this.alertText = "Not enough letters"
+        //const input = document.getElementById('aField' + n)
+        //console.log(input)
+        //input.focus()
       }
       else {
         console.log("just right")
@@ -339,16 +350,17 @@ export default {
         //make sure input is a real word
         if (!this.words.includes(data)) {
           this.alert = true
-          const input = document.getElementById('aField' + this.activeAnswer)
-          input.focus()
+          this.alertText = "Word not in list"
+          //const input = document.getElementById('aField' + this.activeAnswer)
+          //input.focus()
           return
         }
 
         //disable input because this guess is complete
         console.log(this.answers[n])
         this.answers[n].disabled = true
-        const input = document.getElementById('aField' + n)
-        input.hidden = true
+        //const input = document.getElementById('aField' + n)
+        //input.hidden = true
 
         //setup green counter
         var greens = 0
@@ -394,25 +406,24 @@ export default {
           if (nextNum <= 5) {
             //this['a' + nextNum + 'Disabled'] = false
             this.answers[nextNum].disabled = false
-            setTimeout(() => {  console.log("waiting") }, 500)
-            const inputNext = document.getElementById('aField' + nextNum)
+            //setTimeout(() => {  console.log("waiting") }, 500)
+            //const inputNext = document.getElementById('aField' + nextNum)
 
             this.activeAnswer = n + 1
-            inputNext.tabIndex = n + 1
-            console.log("this is inputNext")
-            console.log(inputNext)
-            setTimeout(() => {  inputNext.focus() }, 500)
-            inputNext.focus()
+            //inputNext.tabIndex = n + 1
+            //console.log("this is inputNext")
+            //console.log(inputNext)
+            //setTimeout(() => {  inputNext.focus() }, 500)
+            //inputNext.focus()
           }
         }
       }
     },
     focusOn (elName) {
-      // const input = document.getElementById(elName + n)
-      console.log(this.activeAnswer)
-      //const input = document.getElementById(elName)
-      const input = document.getElementById(elName + this.activeAnswer)
-      input.focus()
+      //console.log(this.activeAnswer)
+      //const input = document.getElementById(elName + this.activeAnswer)
+      //input.focus()
+      console.log(elName)
     }
   },
   computed: {
@@ -436,15 +447,30 @@ export default {
   },
   mounted: function () {
     const wordsFile = require('@/assets/words.json')
-    const firstInput = document.getElementById(this.answers[0].input)
-    firstInput.tabIndex = 1
-    setTimeout(() => {  firstInput.focus() }, 500)
-    //firstInput.focus()
-    //this.words = wordsFile.split("\n")
+    //const firstInput = document.getElementById(this.answers[0].input)
+    //firstInput.tabIndex = 1
+    //setTimeout(() => {  firstInput.focus() }, 500)
     this.words = wordsFile
-    //this.word = this.words[5]
     this.word = this.words[Math.floor(Math.random() * this.words.length)]
     console.log(this.word)
+    window.addEventListener("keyup", function(e) {
+      //console.log(e)
+      if (e.keyCode == 8) {
+        //console.log("bs")
+        this.doType("bs")
+      }
+      else if (e.keyCode == 13) {
+        //console.log("return")
+        this.doType("return")
+      }
+    }.bind(this));
+    window.addEventListener("keypress", function(e) {
+      //console.log(e)
+      if (e.keyCode != 13 && e.keyCode != 8) {
+        //console.log(String.fromCharCode(e.keyCode))
+        this.doType(String.fromCharCode(e.keyCode))
+      }
+    }.bind(this));
   }
 }
 </script>
