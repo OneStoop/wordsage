@@ -96,9 +96,9 @@ textarea:focus, input:focus{
                   :key=l
                 >
                   <v-card
-                    height="30"
-                    width="30"
-                    class="text-h6 pa-0 ma-0"
+                    height="40"
+                    width="40"
+                    class="text-h6 pt-1 ma-0"
                     :color="used[l]"
                     tabindex="-1"
                     id=l
@@ -120,9 +120,9 @@ textarea:focus, input:focus{
                   :key=l
                 >
                   <v-card
-                    height="30"
-                    width="30"
-                    class="text-h6 pa-0 ma-0"
+                    height="40"
+                    width="40"
+                    class="text-h6 pt-1 ma-0"
                     :color="used[l]"
                     tabindex="-1"
                     id=l
@@ -141,7 +141,7 @@ textarea:focus, input:focus{
                   class="pt-5 ma-0"
                 >
                   <v-card
-                    height="30"
+                    height="40"
                     width="50"
                     class="text-caption pt-2 ma-0"
                     color="grey lighten-3"
@@ -159,9 +159,9 @@ textarea:focus, input:focus{
                   :key=l
                 >
                   <v-card
-                    height="30"
-                    width="30"
-                    class="text-h5 pa-0 ma-0"
+                    height="40"
+                    width="40"
+                    class="text-h5 pt-1 ma-0"
                     :color="used[l]"
                     tabindex="-1"
                     id=l
@@ -171,12 +171,12 @@ textarea:focus, input:focus{
                   </v-card>
                 </v-col>
                 <v-col
-                  cols="1"
+                  cols="2"
                   class="pt-5 ma-0"
                 >
                   <v-card
-                    height="30"
-                    width="30"
+                    height="40"
+                    width="40"
                     class="text-h5 pa-0 ma-0"
                     color="grey lighten-3"
                     tabindex="-1"
