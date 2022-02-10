@@ -415,21 +415,52 @@ export default {
         //setup green counter
         var greens = 0
 
+        var usedLetters = ""
+
         for (let i = 0; i < data.length; i++) {
+          let tooMany = false
+
+          //see how many times a letter is in this.word
+          var re = new RegExp(this.word[i], 'g')
+          var occurrence = (this.word.match(re) || []).length
+          //console.log('how many ' + this.word[i] + ' ' + occurrence)
+
+          //see how many times we have seen this letter already
+          var re2 = new RegExp(data[i], 'g')
+          var usedOccurrence = (usedLetters.match(re2) || []).length
+
           //test if characters are in the word
           if (this.word.includes(data[i])) {
-            console.log('contains ' + data[i])
-            //test is position matches, that would be green
+            if (usedOccurrence > occurrence) { tooMany = true}
+
+            //console.log('contains ' + data[i])
+            //test if position matches, that would be green
             if (this.word[i] === data[i]) {
+              if (tooMany) {
+                for (let x=0; x < usedLetters.length; x++) {
+                  if (usedLetters[x] == this.word[i]) {
+                    this.answers[n].colors[x] = "grey"
+                  }
+                }
+              }
               console.log('and position matches')
               this.answers[n].colors[i] = "green"
               this.used[data[i]] = "green"
               greens += 1
+
             }
             else {
-              //possiton must not match, that would be orange
-              console.log('and position does not match')
-              this.answers[n].colors[i] = "orange"
+              if (tooMany) {
+                //console.log("too many is true")
+                //console.log(occurrence)
+                //console.log(usedOccurrence)
+                this.answers[n].colors[i] = "grey"
+              }
+              else {
+                //possiton must not match, that would be orange
+                console.log('and position does not match')
+                this.answers[n].colors[i] = "orange"
+              }
               //make sure we haven't already set this to green
               if (this.used[data[i]] !== "green") {
                 this.used[data[i]] = "orange"
@@ -441,6 +472,7 @@ export default {
             this.answers[n].colors[i] = "grey"
             this.used[data[i]] = "grey"
           }
+          usedLetters += data[i]
         }
 
         if (greens == 5) {
