@@ -25,9 +25,10 @@ textarea:focus, input:focus{
     </v-row>
 
     <v-row dense no-gutters align="center" justify="center" v-on:click="focusOn('aField')">
-      <v-col cols="12" md="6" class="d-flex flex-column justify-center align-center">
+      <v-col cols="12" class="d-flex flex-column justify-center align-center">
         <v-card
-          max-width="500"
+          max-width="800"
+          min-width="400"
           align="center"
         >
           <v-card-text>
@@ -41,8 +42,6 @@ textarea:focus, input:focus{
                   dense
                 >
 
-
-
                   <v-col
                     v-for="i in 5"
                     :key=i
@@ -50,9 +49,9 @@ textarea:focus, input:focus{
                     class="pt-0 ma-0"
                   >
                     <v-card
-                      height="35"
-                      width="35"
-                      class="text-h4 pa-0 ma-0"
+                      height="55"
+                      width="55"
+                      class="text-h4 pt-2 ma-0"
                       :color="ans.colors[i-1]"
                       tabindex="-1"
                       @click="focusOn('aField')"
@@ -63,13 +62,6 @@ textarea:focus, input:focus{
 
                   </v-col>
 
-                  <v-col
-                    cols="1"
-                    height="20"
-                    single-line
-                  >
-
-                  </v-col>
                 </v-row>
               </v-container>
             </div>
@@ -197,7 +189,60 @@ textarea:focus, input:focus{
     <v-row>
 
     </v-row>
+
+    <v-dialog
+      transition="dialog-bottom-transition"
+      max-width="600"
+      v-model="youWon"
+    >
+      <v-card>
+        <v-card-text>
+          <div
+            class="text-h2"
+          >
+            You Won!
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            color="green"
+            text
+            @click="youWon = false"
+          >
+            Close
+          </v-btn>
+
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog
+      transition="dialog-bottom-transition"
+      max-width="600"
+      v-model="youLost"
+    >
+      <v-card>
+        <v-card-text>
+          <div
+            class="text-h2"
+          >
+            Sorry, the word was {{ word }}
+          </div>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+            color="green"
+            text
+            @click="youLost = false"
+          >
+            Close
+          </v-btn>
+
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
+
 </template>
 
 <script>
@@ -207,6 +252,8 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
+      youWon: false,
+      youLost: false,
       alert: false,
       alertText: "",
       word: "found",
@@ -398,6 +445,7 @@ export default {
           for (let a=0; a<=5; a++){
             this.answers[a].disabled = true
           }
+          this.youWon = true
         }
         else {
           //let nextNum = n + 1
@@ -405,17 +453,11 @@ export default {
           let nextNum = n + 1
           console.log("nextNum " + nextNum)
           if (nextNum <= 5) {
-            //this['a' + nextNum + 'Disabled'] = false
             this.answers[nextNum].disabled = false
-            //setTimeout(() => {  console.log("waiting") }, 500)
-            //const inputNext = document.getElementById('aField' + nextNum)
-
             this.activeAnswer = n + 1
-            //inputNext.tabIndex = n + 1
-            //console.log("this is inputNext")
-            //console.log(inputNext)
-            //setTimeout(() => {  inputNext.focus() }, 500)
-            //inputNext.focus()
+          }
+          else {
+            this.youLost = true
           }
         }
       }
