@@ -12,7 +12,7 @@ textarea:focus, input:focus{
 <template>
   <v-container fluid pa-0>
     <!-- Word not found alert -->
-    <v-row align="center" justify="center" v-on:click="focusOn('aField')">
+    <v-row align="center" justify="center">
       <v-col cols="12" lg="6" md="6" class="d-flex flex-column justify-center align-center">
         <v-alert
           :value="alert"
@@ -24,7 +24,7 @@ textarea:focus, input:focus{
       </v-col>
     </v-row>
 
-    <v-row dense no-gutters align="center" justify="center" v-on:click="focusOn('aField')">
+    <v-row dense no-gutters align="center" justify="center">
       <v-col cols="12" class="d-flex flex-column justify-center align-center">
         <v-card
           max-width="800"
@@ -54,7 +54,6 @@ textarea:focus, input:focus{
                       class="text-h4 pt-2 ma-0"
                       :color="ans.colors[i-1]"
                       tabindex="-1"
-                      @click="focusOn('aField')"
                       :id="'ch-' + ans.id + '-' + i"
                     >
                      {{ getCharF(ans.id, i - 1).toUpperCase() }}
@@ -70,7 +69,7 @@ textarea:focus, input:focus{
       </v-col>
     </v-row>
 
-    <v-row dense no-gutters align="center" justify="center" v-on:click="focusOn('aField')">
+    <v-row dense no-gutters align="center" justify="center">
       <v-col cols="12" md="6" class="d-flex flex-column justify-center align-center">
         <v-card
           max-width="500"
@@ -252,6 +251,7 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
+      locked: false,
       youWon: false,
       youLost: false,
       alert: false,
@@ -356,7 +356,10 @@ export default {
       else { return "" }
     },
     doType (l) {
-      console.log(l)
+      if (this.locked) {
+        return
+      }
+
       if (l === 'bs') {
         //if bs then remove last character
         var data = this.answers[this.activeAnswer].word
@@ -445,28 +448,23 @@ export default {
           for (let a=0; a<=5; a++){
             this.answers[a].disabled = true
           }
+          this.locked = true
           this.youWon = true
         }
         else {
-          //let nextNum = n + 1
           this.$forceUpdate()
           let nextNum = n + 1
-          console.log("nextNum " + nextNum)
+
           if (nextNum <= 5) {
             this.answers[nextNum].disabled = false
             this.activeAnswer = n + 1
           }
           else {
+            this.locked = true
             this.youLost = true
           }
         }
       }
-    },
-    focusOn (elName) {
-      //console.log(this.activeAnswer)
-      //const input = document.getElementById(elName + this.activeAnswer)
-      //input.focus()
-      console.log(elName)
     }
   },
   computed: {
@@ -489,10 +487,8 @@ export default {
     }
   },
   mounted: function () {
+    this.locked = false
     const wordsFile = require('@/assets/words.json')
-    //const firstInput = document.getElementById(this.answers[0].input)
-    //firstInput.tabIndex = 1
-    //setTimeout(() => {  firstInput.focus() }, 500)
     this.words = wordsFile
     this.word = this.words[Math.floor(Math.random() * this.words.length)]
     console.log(this.word)
