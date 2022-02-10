@@ -10,7 +10,7 @@ const router = new VueRouter({
   routes: [
     { path: '/', name: 'home', component: loadView('Home')},
     { path: '/wordsage', name: 'wordsage', component: loadView('WordSage')},
-    { path: '/wordsage/random', name: 'wordsageRandom', component: loadView('WordSageRandom')}
+    { path: '/wordsage/:id', name: 'wordsageRandom', component: loadView('WordSage')}
   ]
 })
 

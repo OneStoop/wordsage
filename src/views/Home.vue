@@ -7,7 +7,7 @@
             Welcome to OneStoop Games
             <br>
             <router-link :to="'/wordsage'" style="text-decoration: none;">
-              WordSage Daily [COMMING SOON]
+              WordSage Daily
             </router-link>
             <br>
             <router-link :to="'/wordsage/random'" style="text-decoration: none;">
