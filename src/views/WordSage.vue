@@ -193,6 +193,12 @@ textarea:focus, input:focus{
             class="text-h2"
           >
             You Won!
+            <v-btn
+              text
+              :href="'https://www.dictionary.com/browse/' + word"
+              target="_blank"
+            >
+              Definition
           </div>
         </v-card-text>
         <v-card-actions>
@@ -216,9 +222,16 @@ textarea:focus, input:focus{
       <v-card>
         <v-card-text>
           <div
-            class="text-h2"
+            class="text-h3"
           >
             Sorry, the word was {{ word }}
+            <v-btn
+              text
+              :href="'https://www.dictionary.com/browse/' + word"
+              target="_blank"
+            >
+              Definition
+            </v-btn>
           </div>
         </v-card-text>
         <v-card-actions>
