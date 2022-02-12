@@ -453,7 +453,7 @@ export default {
         var usedLetters = ""
 
         for (let i = 0; i < data.length; i++) {
-          let tooMany = false
+          var tooMany = false
 
           //see how many times a letter is in this.word
           var re = new RegExp(this.word[i], 'g')
@@ -464,9 +464,13 @@ export default {
           var re2 = new RegExp(data[i], 'g')
           var usedOccurrence = (usedLetters.match(re2) || []).length
 
+          if (usedOccurrence >= occurrence) { tooMany = true}
+          console.log('tooMany is ' + tooMany)
+          console.log ('usedOccurrence is ' + usedOccurrence)
+          console.log ('occurrence is ' + occurrence)
+          console.log ('letter is ' + data[i])
           //test if characters are in the word
           if (this.word.includes(data[i])) {
-            if (usedOccurrence > occurrence) { tooMany = true}
 
             //console.log('contains ' + data[i])
             //test if position matches, that would be green
