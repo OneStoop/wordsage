@@ -10,7 +10,7 @@ textarea:focus, input:focus{
 }
   </style>
 <template>
-  <v-container fluid pa-0>
+  <v-container fluid fill-height pa-0>
     <!-- Word not found alert -->
     <v-row align="center" justify="center">
       <v-col cols="12" lg="6" md="6" class="d-flex flex-column justify-center align-center">
@@ -27,8 +27,7 @@ textarea:focus, input:focus{
     <v-row dense no-gutters align="center" justify="center">
       <v-col cols="12" class="d-flex flex-column justify-center align-center">
         <v-card
-          max-width="800"
-          min-width="400"
+          :width="cardWidth"
           align="center"
         >
           <v-card-text>
@@ -48,16 +47,18 @@ textarea:focus, input:focus{
                     cols="2"
                     class="pt-0 ma-0"
                   >
-                    <v-card
-                      height="55"
-                      width="55"
-                      class="text-h4 pt-2 ma-0"
+                    <v-btn
+                      :height="lHeight"
+                      :width="lWidth"
+                      class="text-h4 pt-1 ma-0"
                       :color="ans.colors[i-1]"
                       tabindex="-1"
                       :id="'ch-' + ans.id + '-' + i"
+                      small
+                      :outlined="ans.outlined[i-1]"
                     >
                      {{ getCharF(ans.id, i - 1).toUpperCase() }}
-                    </v-card>
+                    </v-btn>
 
                   </v-col>
 
@@ -65,16 +66,8 @@ textarea:focus, input:focus{
               </v-container>
             </div>
           </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
 
-    <v-row dense no-gutters align="center" justify="center">
-      <v-col cols="12" md="6" class="d-flex flex-column justify-center align-center">
-        <v-card
-          max-width="500"
-        >
-          <v-card-text>
+          <v-card-actions>
             <v-container fluid>
               <v-row
                 class="text-center justify-center"
@@ -82,7 +75,7 @@ textarea:focus, input:focus{
               >
                 <v-col
                   cols="1"
-                  class="pt-5 ma-0"
+                  class="pt-2 ma-0"
                   v-for="l in qRow"
                   :key=l
                 >
@@ -181,7 +174,7 @@ textarea:focus, input:focus{
                 </v-col>
               </v-row>
             </v-container>
-          </v-card-text>
+          </v-card-actions>
         </v-card>
       </v-col>
     </v-row>
@@ -247,7 +240,7 @@ textarea:focus, input:focus{
 //const wordsFile = require('@/assets/sgb-words.txt')
 
 export default {
-  name: 'HelloWorld',
+  name: 'WordSage',
   data () {
     return {
       locked: false,
@@ -269,6 +262,13 @@ export default {
             "grey lighten-3",
             "grey lighten-3",
           ],
+          outlined: [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
           disabled: false,
           input: "aField0"
         },
@@ -281,6 +281,13 @@ export default {
             "grey lighten-3",
             "grey lighten-3",
             "grey lighten-3",
+          ],
+          outlined: [
+            false,
+            false,
+            false,
+            false,
+            false
           ],
           disabled: true,
           input: "aField1"
@@ -295,6 +302,13 @@ export default {
             "grey lighten-3",
             "grey lighten-3",
           ],
+          outlined: [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
           disabled: true,
           input: "aField2"
         },
@@ -307,6 +321,13 @@ export default {
             "grey lighten-3",
             "grey lighten-3",
             "grey lighten-3",
+          ],
+          outlined: [
+            false,
+            false,
+            false,
+            false,
+            false
           ],
           disabled: true,
           input: "aField3"
@@ -321,6 +342,13 @@ export default {
             "grey lighten-3",
             "grey lighten-3",
           ],
+          outlined: [
+            false,
+            false,
+            false,
+            false,
+            false
+          ],
           disabled: true,
           input: "aField4"
         },
@@ -333,6 +361,13 @@ export default {
             "grey lighten-3",
             "grey lighten-3",
             "grey lighten-3",
+          ],
+          outlined: [
+            false,
+            false,
+            false,
+            false,
+            false
           ],
           disabled: true,
           input: "aField5"
@@ -459,6 +494,9 @@ export default {
               else {
                 //possiton must not match, that would be orange
                 console.log('and position does not match')
+                 //this.$refs.dialog.animateClick()
+                 //id="'ch-' + ans.id + '-' + i"
+                //document.getElementById("ch-" + n + "-" + i).animateClick()
                 this.answers[n].colors[i] = "orange"
               }
               //make sure we haven't already set this to green
@@ -473,6 +511,7 @@ export default {
             this.used[data[i]] = "grey"
           }
           usedLetters += data[i]
+
         }
 
         if (greens == 5) {
@@ -500,7 +539,29 @@ export default {
     }
   },
   computed: {
+    lWidth: function () {
+      console.log(window.innerWidth)
 
+      return 35
+    },
+    lHeight: function () {
+      console.log(window.innerHeight)
+      var thisHeight = (window.innerHeight * .45)/7
+      if (thisHeight > 55) {
+        return 55
+      }
+      else {
+        return thisHeight
+      }
+    },
+    cardWidth: function () {
+      if (window.innerWidth > 600) {
+        return 500
+      }
+      else {
+        return 400
+      }
+    }
   },
   watch: {
     alert: function (data) {
